@@ -1,10 +1,14 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-
-import java.io.* ;
-import java.net.* ;
-import java.util.* ;
-
-
+/**
+ * Thread class that processes the request to the HTTP server.
+ * 
+ * Replies with the requested information, or returns a not-found response.
+ * 
+ * @author Nicolas McCallum 100936816
+ */
 final class HttpRequest implements Runnable {
 	final static String CRLF = "\r\n";
 	Socket socket;
@@ -69,20 +73,25 @@ final class HttpRequest implements Runnable {
 			statusLine = "HTTP/1.0 404 Not Found" + CRLF;
 			contentTypeLine = "Content-Type: text/html" + CRLF;
 			entityBody = "<HTML>"
-			           + "<HEAD><TITLE>Not Found</TITLE></HEAD>"
-			           + "<BODY>File Not Found on the server</BODY></HTML>";
+			           + "<HEAD><TITLE>Resource Not Found</TITLE></HEAD>"
+			           + "<BODY><h1>404</h1><h3>Resource does not exist on server</h3></BODY></HTML>";
 		}
 		os.writeBytes(statusLine);
 
 		// Send the content type line
 		os.writeBytes(contentTypeLine);
 		os.writeBytes(CRLF);
+		
+		// If we have the file, send the file over the socket
 		if (fileExists) {
 			sendBytes(fis, os);
 			fis.close();
 		} else {
+			// Otherwise send our 404 response body
 			os.writeBytes(entityBody);
 		}
+		
+		// Close the resources
 		os.close();
 		br.close();
 		socket.close();
