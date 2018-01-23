@@ -10,6 +10,7 @@ import java.util.*;
  * @author Nicolas McCallum 100936816
  */
 final class HttpRequest implements Runnable {
+	private final static String INDEX_PAGE = "index.html";
 	final static String CRLF = "\r\n";
 	Socket socket;
 
@@ -44,7 +45,13 @@ final class HttpRequest implements Runnable {
 		tokens.nextToken(); 
 		String fileName = tokens.nextToken();
 		
-		fileName = "." + fileName ;
+		// If the file name is empty we assume they are asking for the index page
+		if (fileName.isEmpty() || fileName.equals("/")) {
+			fileName = INDEX_PAGE;
+		}
+		
+		fileName = "./webPages/" + fileName ;
+		System.out.println(System.getProperty("user.dir") + fileName);
 		
 		FileInputStream fis = null ;
 		boolean fileExists = true ;
@@ -74,7 +81,9 @@ final class HttpRequest implements Runnable {
 			contentTypeLine = "Content-Type: text/html" + CRLF;
 			entityBody = "<HTML>"
 			           + "<HEAD><TITLE>Resource Not Found</TITLE></HEAD>"
-			           + "<BODY><h1>404</h1><h3>Resource does not exist on server</h3></BODY></HTML>";
+			           + "<BODY><h1 style=\"text-align: center;\">404</h1>"
+			           + "<h3 style=\"text-align: center;\">Resource does not exist on server</h3>"
+			           + "</BODY></HTML>";
 		}
 		os.writeBytes(statusLine);
 
