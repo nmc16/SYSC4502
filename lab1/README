@@ -1,0 +1,25 @@
+##############################
+# Nicolas McCallum 100936816 #
+#            Lab 1           #
+##############################
+
+Instructions to run
+-------------------
+1) Run the program using: 
+       java WebServer <port number>
+
+   Note: The port number can be entered here or 
+	     after the program starts it will prompt
+		 for one
+			 
+2) You can view the index page using:
+       http://localhost:<port number>/
+
+3) You can view the 404 page by entering a page
+   that does not exist:
+       http://localhost:<port number>/test.html
+	   
+4) You can view the individual resources (i.e. gif/jpg)
+   with the name sample:
+       http://localhost:<port number>/sample.jpg
+	   http://localhost:<port number>/sample.gif
